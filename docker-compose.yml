@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:12-alpine
+    restart: unless-stopped
+    container_name: sales_postgres
+    environment:
+      - POSTGRES_USER=app_sales
+      - POSTGRES_PASSWORD=app_sales
+      - POSTGRES_DB=sales
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg-isready -U app_sales -d sales'"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - sales-network
+
+volumes:
+  sales_postgres: { }
+
+networks:
+  sales-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.10.2.0/24

@@ -14,10 +14,10 @@ class FreightCalculatorAdapter : FreightCalculator {
 
     override fun calculate(input: Freight): Double = input.quantity * handler.calculate(
         FreightCalculatorInput(
-            height = input.height,
-            width = input.width,
-            length = input.length,
-            weight = input.weight,
+            height = input.height.value,
+            width = input.width.value,
+            length = input.length.value,
+            weight = input.weight.value,
             from = FreightCalculatorInput.Coordinates(latitude = input.from.latitude, longitude = input.from.longitude),
             to = FreightCalculatorInput.Coordinates(latitude = input.to.latitude, longitude = input.to.longitude)
         )
