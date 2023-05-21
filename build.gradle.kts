@@ -52,6 +52,7 @@ dependencies {
 	}
 	testImplementation("io.mockk:mockk:${mockkVersion}")
 	testImplementation("com.ninja-squad:springmockk:${springMockkVersion}")
+	testImplementation("com.github.tomakehurst:wiremock-jre8:2.35.0")
 }
 
 dependencyManagement {

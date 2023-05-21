@@ -11,6 +11,7 @@ import java.util.*
 class BranasStorageAdapter(
     @Autowired private val client: BranasStorageClient
 ) : StorageClient {
+
     override fun findProductById(id: UUID): Product = client.findById(id).let {
         Product(
             height = it.height.toPositiveDouble(),
