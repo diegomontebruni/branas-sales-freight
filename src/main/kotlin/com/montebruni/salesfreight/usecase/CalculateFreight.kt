@@ -3,8 +3,8 @@ package com.montebruni.salesfreight.usecase
 import com.montebruni.salesfreight.domain.entity.Freight
 import com.montebruni.salesfreight.domain.port.AddressCoordinatesRepository
 import com.montebruni.salesfreight.domain.port.FreightCalculator
-import com.montebruni.salesfreight.extensions.toPositiveDouble
-import com.montebruni.salesfreight.usecase.CalculateFreightInput
+import com.montebruni.salesfreight.domain.port.StorageClient
+import com.montebruni.salesfreight.usecase.input.CalculateFreightInput
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service
 class CalculateFreight(
     @Autowired private val freightCalculator: FreightCalculator,
     @Autowired private val addressCoordinatesRepository: AddressCoordinatesRepository,
+    @Autowired private val storageClient: StorageClient
 ){
     fun execute(input: CalculateFreightInput): Double {
         val fromCoordinates = addressCoordinatesRepository.findByCep(input.fromCep)
@@ -23,10 +24,7 @@ class CalculateFreight(
         return input.items.sumOf {
             freightCalculator.calculate(
                 Freight(
-                    height = it.height.value.toPositiveDouble(),
-                    width = it.width.value.toPositiveDouble(),
-                    length = it.length.value.toPositiveDouble(),
-                    weight = it.weight.value.toPositiveDouble(),
+                    product = storageClient.findProductById(it.productId),
                     quantity = it.quantity,
                     from = Freight.Coordinates(fromCoordinates.latitude, fromCoordinates.longitude),
                     to = Freight.Coordinates(toCoordinates.latitude, toCoordinates.longitude)

@@ -1,8 +1,8 @@
-package com.montebruni.salesfreight.domain.entity.freightCalculator
+package com.montebruni.salesfreight.resource.freightCalculator
 
 import com.montebruni.salesfreight.common.UnitTests
-import com.montebruni.salesfreight.fixture.domain.createFreight
-import com.montebruni.salesfreight.domain.entity.freightCalculator.handlers.VolumeFreightCalculator
+import com.montebruni.salesfreight.fixture.resource.freightCalculator.createFreight
+import com.montebruni.salesfreight.resource.freightCalculator.handlers.VolumeFreightCalculator
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK

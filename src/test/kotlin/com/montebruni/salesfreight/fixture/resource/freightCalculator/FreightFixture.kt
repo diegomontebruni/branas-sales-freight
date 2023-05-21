@@ -1,15 +1,12 @@
-package com.montebruni.salesfreight.fixture.domain
+package com.montebruni.salesfreight.fixture.resource.freightCalculator
 
 import com.montebruni.salesfreight.domain.entity.Freight
-import com.montebruni.salesfreight.domain.entity.freightCalculator.FreightCalculatorInput
-import com.montebruni.salesfreight.extensions.toPositiveDouble
+import com.montebruni.salesfreight.fixture.domain.createProduct
+import com.montebruni.salesfreight.resource.freightCalculator.FreightCalculatorInput
 import java.math.BigDecimal
 
 fun createFreight() = Freight(
-    height = 20.0.toPositiveDouble(),
-    width = 15.0.toPositiveDouble(),
-    length = 10.0.toPositiveDouble(),
-    weight = 1.0.toPositiveDouble(),
+    product = createProduct(),
     quantity = 1,
     from = Freight.Coordinates(latitude = BigDecimal("123"), longitude = BigDecimal("123")),
     to = Freight.Coordinates(latitude = BigDecimal("456"), longitude = BigDecimal("456")),

@@ -34,5 +34,4 @@ class FreightController(
     @PostMapping("/simulate")
     fun calculateFreight(@RequestBody body: CalculateFreightRequest): CalculateFreightResponse =
         CalculateFreightResponse(freightAmount = calculateFreight.execute(body.toCalculateFreightInput()))
-
 }

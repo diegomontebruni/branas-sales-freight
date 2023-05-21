@@ -1,4 +1,4 @@
-package com.montebruni.salesfreight.domain.entity.freightCalculator
+package com.montebruni.salesfreight.resource.freightCalculator
 
 import java.math.BigDecimal
 

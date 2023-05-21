@@ -3,7 +3,7 @@ package com.montebruni.salesfreight.resource.rest
 import com.montebruni.salesfreight.common.BaseRestIT
 import com.montebruni.salesfreight.fixture.resource.rest.createCalculateFreightRequest
 import com.montebruni.salesfreight.usecase.CalculateFreight
-import com.montebruni.salesfreight.usecase.CalculateFreightInput
+import com.montebruni.salesfreight.usecase.input.CalculateFreightInput
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.confirmVerified
 import io.mockk.every

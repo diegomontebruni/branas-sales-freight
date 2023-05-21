@@ -4,24 +4,35 @@ import com.montebruni.salesfreight.common.UnitTests
 import com.montebruni.salesfreight.domain.entity.Freight
 import com.montebruni.salesfreight.domain.port.AddressCoordinatesRepository
 import com.montebruni.salesfreight.domain.port.FreightCalculator
+import com.montebruni.salesfreight.domain.port.StorageClient
 import com.montebruni.salesfreight.fixture.domain.createAddressCoordinate
+import com.montebruni.salesfreight.fixture.domain.createProduct
 import com.montebruni.salesfreight.fixture.usecase.createCalculateFreightInput
+import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.verify
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.math.BigDecimal
+import java.util.UUID
 
 class CalculateFreightTest(
     @MockK private val freightCalculator: FreightCalculator,
-    @MockK private val addressCoordinatesRepository: AddressCoordinatesRepository
+    @MockK private val addressCoordinatesRepository: AddressCoordinatesRepository,
+    @MockK private val storageClient: StorageClient
 ) : UnitTests() {
 
     @InjectMockKs
     private lateinit var useCase: CalculateFreight
+
+    @AfterEach
+    internal fun tearDown() {
+        confirmVerified(freightCalculator, addressCoordinatesRepository, storageClient)
+    }
 
     @Test
     fun `should calculate a freight when given 3 products`() {
@@ -36,11 +47,13 @@ class CalculateFreightTest(
 
         val freightSlot = mutableListOf<Freight>()
         val addressCoordinateSlot = mutableListOf<String>()
+        val productSlot = mutableListOf<UUID>()
 
         every { freightCalculator.calculate(capture(freightSlot)) } returns
             camFreight andThen guitarFreight andThen refrigeratorFreight
         every { addressCoordinatesRepository.findByCep(capture(addressCoordinateSlot)) } returns
             fromAddressCoordinates andThen toAddressCoordinates
+        every { storageClient.findProductById(capture(productSlot)) } returns createProduct()
 
         val calculatedFreight = useCase.execute(input)
 
@@ -50,6 +63,7 @@ class CalculateFreightTest(
 
         freightSlot.forEach { verify { freightCalculator.calculate(it) } }
         addressCoordinateSlot.forEach { verify { addressCoordinatesRepository.findByCep(it) } }
+        productSlot.forEach { verify { storageClient.findProductById(it) } }
     }
 
     @Test
