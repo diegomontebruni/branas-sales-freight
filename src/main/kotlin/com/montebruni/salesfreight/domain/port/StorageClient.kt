@@ -5,5 +5,5 @@ import java.util.UUID
 
 interface StorageClient {
 
-    fun findProductById(id: UUID): Product
+    fun findProductById(id: UUID): Product?
 }

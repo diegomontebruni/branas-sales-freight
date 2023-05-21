@@ -1,12 +1,15 @@
 package com.montebruni.salesfreight.usecase
 
 import com.montebruni.salesfreight.domain.entity.Freight
+import com.montebruni.salesfreight.domain.entity.Product
 import com.montebruni.salesfreight.domain.port.AddressCoordinatesRepository
 import com.montebruni.salesfreight.domain.port.FreightCalculator
 import com.montebruni.salesfreight.domain.port.StorageClient
 import com.montebruni.salesfreight.usecase.input.CalculateFreightInput
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.util.UUID
+import kotlin.jvm.Throws
 
 @Service
 class CalculateFreight(
@@ -24,7 +27,7 @@ class CalculateFreight(
         return input.items.sumOf {
             freightCalculator.calculate(
                 Freight(
-                    product = storageClient.findProductById(it.productId),
+                    product = getProduct(it.productId),
                     quantity = it.quantity,
                     from = Freight.Coordinates(fromCoordinates.latitude, fromCoordinates.longitude),
                     to = Freight.Coordinates(toCoordinates.latitude, toCoordinates.longitude)
@@ -32,4 +35,7 @@ class CalculateFreight(
             )
         }
     }
+
+    private fun getProduct(id: UUID): Product = storageClient.findProductById(id)
+        ?: throw IllegalArgumentException("Product not found with id $id")
 }

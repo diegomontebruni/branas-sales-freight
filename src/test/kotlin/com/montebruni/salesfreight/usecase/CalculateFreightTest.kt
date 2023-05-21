@@ -76,4 +76,27 @@ class CalculateFreightTest(
 
         verify { addressCoordinatesRepository.findByCep(input.fromCep) }
     }
+
+    @Test
+    fun `should throw exception when has a invalid product`() {
+        val input = createCalculateFreightInput()
+        val fromAddressCoordinates = createAddressCoordinate()
+        val toAddressCoordinates = createAddressCoordinate()
+            .copy(cep = "89783627", latitude = BigDecimal(609), longitude = BigDecimal(199))
+
+        val addressCoordinateSlot = mutableListOf<String>()
+        val productSlot = mutableListOf<UUID>()
+
+        every { addressCoordinatesRepository.findByCep(capture(addressCoordinateSlot)) } returns
+            fromAddressCoordinates andThen toAddressCoordinates
+        every { storageClient.findProductById(capture(productSlot)) } throws IllegalArgumentException()
+
+        assertThrows<IllegalArgumentException> { useCase.execute(input) }
+
+        assertEquals(input.fromCep, addressCoordinateSlot.first())
+        assertEquals(input.toCep, addressCoordinateSlot.last())
+
+        addressCoordinateSlot.forEach { verify { addressCoordinatesRepository.findByCep(it) } }
+        productSlot.forEach { verify { storageClient.findProductById(it) } }
+    }
 }
