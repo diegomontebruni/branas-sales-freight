@@ -39,6 +39,11 @@ logging:
       montebruni:
         sales: ${LOG_LEVEL:DEBUG}
 
+client:
+  branasstorage:
+    product:
+      host: http://localhost:8091
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
