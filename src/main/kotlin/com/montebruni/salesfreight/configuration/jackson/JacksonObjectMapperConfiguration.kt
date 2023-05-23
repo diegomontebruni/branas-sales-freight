@@ -16,7 +16,6 @@ class JacksonObjectMapperConfiguration {
 
     @Bean
     fun defaultObjectMapper(): ObjectMapper = jacksonObjectMapper()
-        .setPropertyNamingStrategy(SNAKE_CASE)
         .setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL)
         .registerModule(JavaTimeModule())
         .disable(DeserializationFeature.FAIL_ON_MISSING_EXTERNAL_TYPE_ID_PROPERTY)

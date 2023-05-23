@@ -4,7 +4,7 @@ import com.montebruni.salesfreight.common.UnitTests
 import com.montebruni.salesfreight.domain.entity.Freight
 import com.montebruni.salesfreight.domain.port.AddressCoordinatesRepository
 import com.montebruni.salesfreight.domain.port.FreightCalculator
-import com.montebruni.salesfreight.domain.port.StorageClient
+import com.montebruni.salesfreight.domain.port.ProductRepository
 import com.montebruni.salesfreight.fixture.domain.createAddressCoordinate
 import com.montebruni.salesfreight.fixture.domain.createProduct
 import com.montebruni.salesfreight.fixture.usecase.createCalculateFreightInput
@@ -23,7 +23,7 @@ import java.util.UUID
 class CalculateFreightTest(
     @MockK private val freightCalculator: FreightCalculator,
     @MockK private val addressCoordinatesRepository: AddressCoordinatesRepository,
-    @MockK private val storageClient: StorageClient
+    @MockK private val productRepository: ProductRepository
 ) : UnitTests() {
 
     @InjectMockKs
@@ -31,7 +31,7 @@ class CalculateFreightTest(
 
     @AfterEach
     internal fun tearDown() {
-        confirmVerified(freightCalculator, addressCoordinatesRepository, storageClient)
+        confirmVerified(freightCalculator, addressCoordinatesRepository, productRepository)
     }
 
     @Test
@@ -53,7 +53,7 @@ class CalculateFreightTest(
             camFreight andThen guitarFreight andThen refrigeratorFreight
         every { addressCoordinatesRepository.findByCep(capture(addressCoordinateSlot)) } returns
             fromAddressCoordinates andThen toAddressCoordinates
-        every { storageClient.findProductById(capture(productSlot)) } returns createProduct()
+        every { productRepository.findProductById(capture(productSlot)) } returns createProduct()
 
         val calculatedFreight = useCase.execute(input)
 
@@ -63,7 +63,7 @@ class CalculateFreightTest(
 
         freightSlot.forEach { verify { freightCalculator.calculate(it) } }
         addressCoordinateSlot.forEach { verify { addressCoordinatesRepository.findByCep(it) } }
-        productSlot.forEach { verify { storageClient.findProductById(it) } }
+        productSlot.forEach { verify { productRepository.findProductById(it) } }
     }
 
     @Test
@@ -89,7 +89,7 @@ class CalculateFreightTest(
 
         every { addressCoordinatesRepository.findByCep(capture(addressCoordinateSlot)) } returns
             fromAddressCoordinates andThen toAddressCoordinates
-        every { storageClient.findProductById(capture(productSlot)) } throws IllegalArgumentException()
+        every { productRepository.findProductById(capture(productSlot)) } throws IllegalArgumentException()
 
         assertThrows<IllegalArgumentException> { useCase.execute(input) }
 
@@ -97,6 +97,6 @@ class CalculateFreightTest(
         assertEquals(input.toCep, addressCoordinateSlot.last())
 
         addressCoordinateSlot.forEach { verify { addressCoordinatesRepository.findByCep(it) } }
-        productSlot.forEach { verify { storageClient.findProductById(it) } }
+        productSlot.forEach { verify { productRepository.findProductById(it) } }
     }
 }

@@ -1,16 +1,16 @@
-package com.montebruni.salesfreight.resource.client.branasstorage
+package com.montebruni.salesfreight.resource.client.salescatalog
 
 import com.montebruni.salesfreight.domain.entity.Product
-import com.montebruni.salesfreight.domain.port.StorageClient
+import com.montebruni.salesfreight.domain.port.ProductRepository
 import com.montebruni.salesfreight.extensions.toPositiveDouble
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class BranasStorageAdapter(
-    @Autowired private val client: BranasStorageClient
-) : StorageClient {
+class SalesCatalogAdapter(
+    @Autowired private val client: SalesCatalogClient
+) : ProductRepository {
 
     override fun findProductById(id: UUID): Product = client.findById(id).let {
         Product(
