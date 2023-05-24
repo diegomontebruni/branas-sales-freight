@@ -7,6 +7,7 @@ import com.montebruni.salesfreight.fixture.domain.createProduct
 import io.mockk.impl.annotations.MockK
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpHeaders.CONTENT_TYPE
@@ -15,10 +16,8 @@ import org.springframework.test.context.ContextConfiguration
 import java.util.*
 
 class SalesCatalogAdapterIT(
-    @MockK private val productRepository: ProductRepository
+    @Autowired private val salesCatalog: SalesCatalogAdapter
 ) : BaseHTTPClientIT() {
-
-    val url = ""
 
     @Test
     fun `should successfully call catalog sales and return a product`() {
@@ -26,7 +25,7 @@ class SalesCatalogAdapterIT(
         val expectedResult = createProduct()
 
         wmServer.stubFor(
-            WireMock.post(url)
+            WireMock.get("/$productId")
                 .willReturn(
                     WireMock.aResponse()
                         .withStatus(200)
@@ -35,13 +34,13 @@ class SalesCatalogAdapterIT(
                 )
         )
 
-        val result = productRepository.findProductById(productId)!!
+        val result = salesCatalog.findProductById(productId)
 
         assertEquals(expectedResult.height, result.height)
         assertEquals(expectedResult.length, result.length)
         assertEquals(expectedResult.weight, result.weight)
         assertEquals(expectedResult.width, result.width)
 
-        wmServer.verify(WireMock.postRequestedFor(WireMock.urlEqualTo(url)))
+        //wmServer.verify(WireMock.postRequestedFor(WireMock.urlEqualTo(url)))
     }
 }

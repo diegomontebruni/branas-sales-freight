@@ -45,7 +45,7 @@ class FreightControllerIT : BaseRestIT() {
                 .content(mapper.writeValueAsString(request))
         )
             .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
-            .andExpect(MockMvcResultMatchers.jsonPath("freight_amount").value(expectedOutput.toString()))
+            .andExpect(MockMvcResultMatchers.jsonPath("freightAmount").value(expectedOutput.toString()))
             .run {
                 assertEquals(request.fromCep, useCaseSlot.captured.fromCep)
                 assertEquals(request.toCep, useCaseSlot.captured.toCep)

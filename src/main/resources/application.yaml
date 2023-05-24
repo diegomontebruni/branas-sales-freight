@@ -40,7 +40,7 @@ logging:
         sales: ${LOG_LEVEL:DEBUG}
 
 client:
-  branasstorage:
+  sales-catalog:
     product:
       host: http://localhost:8091
 
