@@ -4,12 +4,11 @@ import com.montebruni.salesfreight.resource.client.salescatalog.response.SalesCa
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestParam
 import java.util.UUID
 
 @FeignClient(
     url = "\${client.sales-catalog.product.host}",
-    path = "/v1/product",
+    path = "/v1/products",
     name = "sales-catalog-product-client"
 )
 interface SalesCatalogClient {
