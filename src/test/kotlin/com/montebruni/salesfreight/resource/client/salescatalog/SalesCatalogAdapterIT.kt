@@ -16,7 +16,7 @@ import org.springframework.test.context.ContextConfiguration
 import java.util.*
 
 class SalesCatalogAdapterIT(
-    @Autowired private val salesCatalog: SalesCatalogAdapter
+    private val salesCatalog: SalesCatalogAdapter
 ) : BaseHTTPClientIT() {
 
     @Test

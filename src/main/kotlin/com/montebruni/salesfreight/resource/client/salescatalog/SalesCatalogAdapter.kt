@@ -9,7 +9,7 @@ import java.util.*
 
 @Service
 class SalesCatalogAdapter(
-    private val client: SalesCatalogClient
+    @Autowired private val client: SalesCatalogClient
 ) : ProductRepository {
 
     override fun findProductById(id: UUID): Product = client.findById(id).let {
