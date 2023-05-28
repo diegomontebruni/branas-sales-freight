@@ -5,7 +5,7 @@ spring:
   main:
     banner-mode: off
   application:
-    name: sales
+    name: sales-freight
   datasource:
     url: jdbc:postgresql://localhost:5432/sales_freight
     username: app_sales
