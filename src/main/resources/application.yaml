@@ -1,0 +1,49 @@
+server:
+  port: 8090
+
+spring:
+  main:
+    banner-mode: off
+  application:
+    name: sales-freight
+  datasource:
+    url: jdbc:postgresql://localhost:5432/sales_freight
+    username: app_sales
+    password: app_sales
+    driver-class-name: org.postgresql.Driver
+
+  flyway:
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    schemas: public
+    default-schema: public
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+    open-in-view: false
+
+logging:
+  level:
+    org:
+      springframework:
+        web: ${LOG_LEVEL:DEBUG}
+    com:
+      montebruni:
+        sales: ${LOG_LEVEL:DEBUG}
+
+client:
+  sales-catalog:
+    product:
+      host: http://localhost:8091
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
