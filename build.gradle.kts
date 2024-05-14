@@ -1,12 +1,14 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "3.0.5"
-	id("io.spring.dependency-management") version "1.1.0"
-	id("org.flywaydb.flyway") version "9.8.1"
-	kotlin("jvm") version "1.7.22"
-	kotlin("plugin.spring") version "1.7.22"
-	kotlin("plugin.jpa") version "1.7.22"
+	id("org.springframework.boot") version "3.2.4"
+	id("io.spring.dependency-management") version "1.1.4"
+	id("org.flywaydb.flyway") version "9.16.3"
+	id("io.gitlab.arturbosch.detekt") version "1.23.4"
+
+	kotlin("jvm") version "1.9.21"
+	kotlin("plugin.spring") version "1.9.21"
+	kotlin("plugin.jpa") version "1.9.21"
 }
 
 group = "com.montebruni"
@@ -17,10 +19,8 @@ repositories {
 	mavenCentral()
 }
 
-val mockkVersion = "1.13.4"
-val kotlinLoggingVersion = "3.0.5"
-val springMockkVersion = "3.1.2"
-val testContainerVersion = "1.18.0"
+extra["testContainerVersion"] = "1.19.3"
+extra["springCloudVersion"] = "2023.0.0"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
@@ -28,18 +28,18 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("io.github.microutils:kotlin-logging-jvm:$kotlinLoggingVersion")
-	implementation("org.hibernate.validator:hibernate-validator:8.0.0.Final")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
 
 	// Feign client
 	implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
+	implementation("io.github.openfeign:feign-okhttp")
 
 	// Database
 	implementation("org.flywaydb:flyway-core")
 	runtimeOnly("org.postgresql:postgresql")
 
 	// Swagger
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 
@@ -47,19 +47,44 @@ dependencies {
 	testImplementation("org.testcontainers:junit-jupiter")
 	testImplementation("org.testcontainers:postgresql")
 
-	testImplementation("org.springframework.boot:spring-boot-starter-test") {
-		exclude("org.mockito")
-	}
-	testImplementation("io.mockk:mockk:${mockkVersion}")
-	testImplementation("com.ninja-squad:springmockk:${springMockkVersion}")
-	testImplementation("com.github.tomakehurst:wiremock-jre8:2.35.0")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("io.mockk:mockk:1.13.8")
+	testImplementation("com.ninja-squad:springmockk:4.0.2")
+	testImplementation("com.github.tomakehurst:wiremock-jre8-standalone:3.0.1")
+
+	detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.4")
+	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 }
 
 dependencyManagement {
 	imports {
-		mavenBom("org.testcontainers:testcontainers-bom:$testContainerVersion")
-		mavenBom("org.springframework.cloud:spring-cloud-dependencies:2022.0.0")
+		mavenBom("org.testcontainers:testcontainers-bom:${property("testContainerVersion")}")
+		mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
 	}
+}
+
+detekt {
+	baseline = file("$projectDir/detekt/baseline.xml")
+	config.setFrom("$projectDir/detekt/detekt.yml")
+	buildUponDefaultConfig = true
+	autoCorrect = true
+}
+
+tasks.detekt {
+	reports {
+		xml.required.set(false)
+		html.required.set(false)
+		txt.required.set(false)
+		sarif.required.set(false)
+	}
+
+	include("**/*.kt", "**/*.kts")
+	exclude("**/resources/**", "**/build/**")
+}
+
+tasks.detektBaseline {
+	include("**/*.kt", "**/*.kts")
+	exclude("**/resources/**", "**/build/**")
 }
 
 tasks.withType<KotlinCompile> {

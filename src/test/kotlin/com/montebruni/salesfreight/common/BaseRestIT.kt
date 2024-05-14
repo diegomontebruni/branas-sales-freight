@@ -10,7 +10,8 @@ import org.springframework.test.web.servlet.MockMvc
 
 @Import(value = [JacksonObjectMapperConfiguration::class])
 @ExtendWith(SpringExtension::class)
-abstract class BaseRestIT {
+@Suppress("SpringJavaInjectionPointsAutowiringInspection")
+open class BaseRestIT {
 
     @Autowired
     lateinit var mockMvc: MockMvc

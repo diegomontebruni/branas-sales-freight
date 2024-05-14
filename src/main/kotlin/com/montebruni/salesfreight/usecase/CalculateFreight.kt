@@ -15,7 +15,8 @@ class CalculateFreight(
     @Autowired private val freightCalculator: FreightCalculator,
     @Autowired private val addressCoordinatesRepository: AddressCoordinatesRepository,
     @Autowired private val productRepository: ProductRepository
-){
+) {
+
     fun execute(input: CalculateFreightInput): Double {
         val fromCoordinates = addressCoordinatesRepository.findByCep(input.fromCep)
             ?: throw IllegalArgumentException("Invalid from cep")

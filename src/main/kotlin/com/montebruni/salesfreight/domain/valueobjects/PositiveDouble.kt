@@ -6,7 +6,7 @@ import java.math.RoundingMode
 data class PositiveDouble(val value: Double) {
 
     init {
-        if (value < 0) throw IllegalArgumentException("Value is less than zero")
+        require(value >= 0) { "Value is less than zero" }
     }
 
     constructor(value: String) : this(value.toDouble())

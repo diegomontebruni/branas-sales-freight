@@ -28,7 +28,7 @@ class FreightControllerIT : BaseRestIT() {
         confirmVerified(calculateFreight)
     }
 
-    private val baseUrl = "/v1/freight"
+    private val baseUrl = "/v1/freights"
 
     @Test
     fun `should return double when creation is successfully`() {
