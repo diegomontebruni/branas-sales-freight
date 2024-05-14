@@ -1,9 +1,9 @@
 package com.montebruni.salesfreight.resource.freightCalculator
 
 import com.montebruni.salesfreight.domain.entity.Freight
-import com.montebruni.salesfreight.resource.freightCalculator.handlers.VolumeFreightCalculator
 import com.montebruni.salesfreight.domain.port.FreightCalculator
 import com.montebruni.salesfreight.extensions.toDecimal
+import com.montebruni.salesfreight.resource.freightCalculator.handlers.VolumeFreightCalculator
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 

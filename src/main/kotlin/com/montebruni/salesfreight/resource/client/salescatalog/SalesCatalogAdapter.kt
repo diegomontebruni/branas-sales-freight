@@ -12,12 +12,13 @@ class SalesCatalogAdapter(
     @Autowired private val client: SalesCatalogClient
 ) : ProductRepository {
 
-    override fun findProductById(id: UUID): Product = client.findById(id).let {
-        Product(
-            height = it.height.toPositiveDouble(),
-            width = it.width.toPositiveDouble(),
-            length = it.length.toPositiveDouble(),
-            weight = it.weight.toPositiveDouble()
-        )
-    }
+    override fun findProductById(id: UUID): Product =
+        client.findById(id).let {
+            Product(
+                height = it.height.toPositiveDouble(),
+                width = it.width.toPositiveDouble(),
+                length = it.length.toPositiveDouble(),
+                weight = it.weight.toPositiveDouble()
+            )
+        }
 }

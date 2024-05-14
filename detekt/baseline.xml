@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>MagicNumber:DensityFreightCalculator.kt$DensityFreightCalculator$100</ID>
+    <ID>MagicNumber:DistanceFreightCalculator.kt$DistanceFreightCalculator$1.1515</ID>
+    <ID>MagicNumber:DistanceFreightCalculator.kt$DistanceFreightCalculator$1.609344</ID>
+    <ID>MagicNumber:DistanceFreightCalculator.kt$DistanceFreightCalculator$180.0</ID>
+    <ID>MagicNumber:DistanceFreightCalculator.kt$DistanceFreightCalculator$60.0</ID>
+    <ID>MagicNumber:DoubleExtensions.kt$100</ID>
+  </CurrentIssues>
+</SmellBaseline>

@@ -1,7 +1,7 @@
 package com.montebruni.salesfreight.resource.freightCalculator.handlers
 
-import com.montebruni.salesfreight.resource.freightCalculator.FreightCalculatorInput
 import com.montebruni.salesfreight.extensions.toMeters
+import com.montebruni.salesfreight.resource.freightCalculator.FreightCalculatorInput
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 

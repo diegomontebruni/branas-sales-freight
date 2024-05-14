@@ -7,7 +7,7 @@ spring:
   application:
     name: sales-freight
   datasource:
-    url: jdbc:postgresql://localhost:5432/sales_freight
+    url: jdbc:postgresql://localhost:5432/sales-freight
     username: app_sales
     password: app_sales
     driver-class-name: org.postgresql.Driver

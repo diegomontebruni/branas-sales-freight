@@ -1,4 +1,4 @@
-package com.montebruni.sales.configuration.flyway
+package com.montebruni.salesfreight.configuration.flyway
 
 import org.flywaydb.core.Flyway
 import org.springframework.beans.factory.annotation.Autowired
@@ -8,6 +8,7 @@ import javax.sql.DataSource
 
 @Configuration
 class FlywayConfig {
+
     @Autowired
     private lateinit var dataSource: DataSource
 
